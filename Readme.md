@@ -45,14 +45,17 @@ npm start
 ```
 yarn start
 ```
+
+Add `.env` file and `TOKEN ENV VARIABLES`
+
 From command line execute:
 
-`curl http://<HOST>:<PORT?/status?screen_name=<USERNAME>`
+`curl http://<HOST>:<PORT>/status?screen_name=<USERNAME>`
 
 
 ## Built With
 
-* [Nodejs](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API) - server
+* [Nodejs](https://nodejs.org/en/) - server
 
 ## Authors
 
