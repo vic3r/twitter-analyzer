@@ -45,9 +45,12 @@ npm start
 ```
 yarn start
 ```
+
+Add `.env` file and `TOKEN ENV VARIABLES`
+
 From command line execute:
 
-`curl http://<HOST>:<PORT?/status?screen_name=<USERNAME>`
+`curl http://<HOST>:<PORT>/status?screen_name=<USERNAME>`
 
 
 ## Built With
