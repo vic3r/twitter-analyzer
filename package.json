@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
+    "event-stream": "^3.3.4",
     "express": "^4.16.4",
     "express-promise-router": "^3.0.3",
     "natural": "^0.6.2",
