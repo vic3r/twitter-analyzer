@@ -1,6 +1,5 @@
 const client = require('./client');
 const rp = require('request-promise');
-const twitterClient = require('./client');
 
 const getTimeLine = (screenName) => {
   const params = {screen_name:screenName};
