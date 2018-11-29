@@ -1,6 +1,17 @@
 import spacy
-spacy.load('en')
+import gensim
+import nltk
+import random
+import pyLDAvis.gensim
 from spacy.lang.en import English
+from nltk.corpus import wordnet as wn
+from nltk.stem.wordnet import WordNetLemmatizer
+from gensim import corpora
+from os.path import join, dirname
+
+output = join(dirname(__file__),'../', 'output.csv')
+
+spacy.load('en')
 parser = English()
 
 def tokenize(text):
@@ -10,27 +21,23 @@ def tokenize(text):
         if token.orth_.isspace():
             continue
         elif token.like_url:
-            lda_tokens.append('URL')
+            continue
         elif token.orth_.startswith('@'):
-            lda_tokens.append('SCREEN_NAME')
+            continue
         else:
             lda_tokens.append(token.lower_)
     return lda_tokens
 
-import nltk
+
 nltk.download('wordnet')
 
-
-
-from nltk.corpus import wordnet as wn
 def get_lemma(word):
     lemma = wn.morphy(word)
     if lemma is None:
         return word
     else:
         return lemma
-    
-from nltk.stem.wordnet import WordNetLemmatizer
+
 def get_lemma2(word):
     return WordNetLemmatizer().lemmatize(word)
 
@@ -44,24 +51,19 @@ def prepare_text_for_lda(text):
     tokens = [get_lemma(token) for token in tokens]
     return tokens
 
-import random
 text_data = []
-with open('dataset.csv') as f:
+with open(output) as f:
     for line in f:
         tokens = prepare_text_for_lda(line)
-        if random.random() > .99:
-            print(tokens)
-            text_data.append(tokens)
+        print(tokens)
+        text_data.append(tokens)
 
-from gensim import corpora
 dictionary = corpora.Dictionary(text_data)
 corpus = [dictionary.doc2bow(text) for text in text_data]
 import pickle
 pickle.dump(corpus, open('corpus.pkl', 'wb'))
 dictionary.save('dictionary.gensim')
 
-
-import gensim
 NUM_TOPICS = 5
 ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics = NUM_TOPICS, id2word=dictionary, passes=15)
 ldamodel.save('model5.gensim')
@@ -92,6 +94,5 @@ dictionary = gensim.corpora.Dictionary.load('dictionary.gensim')
 corpus = pickle.load(open('corpus.pkl', 'rb'))
 lda = gensim.models.ldamodel.LdaModel.load('model5.gensim')
 
-import pyLDAvis.gensim
 lda_display = pyLDAvis.gensim.prepare(lda, corpus, dictionary, sort_topics=False)
 pyLDAvis.display(lda_display)
